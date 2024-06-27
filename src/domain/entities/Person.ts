@@ -4,27 +4,37 @@ import { PersonAvailability } from "./PersonAvailability";
 
 type CreatePersonProps = {
     name: string,
-    availability: Date[];
 }
 
 type RestorePersonProps = {
     id: Id,
     name: string,
-    availability: PersonAvailability[];
+    availability: Date[];
 };
 
 export class Person extends Entity {
-    private constructor(readonly id: Id, private name: string, private availability: PersonAvailability[]) { 
+    private availability: PersonAvailability[] = [];
+
+    private constructor(id: Id, private name: string) { 
         super(id);
     }
 
-    static create({ name, availability }: CreatePersonProps) {
-        const personAvailability = availability.map((dateTime) => PersonAvailability.create({ dateTime }));
-        return new Person(new Id(), name, personAvailability);
+    static create({ name  }: CreatePersonProps) {
+        return new Person(new Id(), name);
     }
 
-    static restore({ id, name, availability }: RestorePersonProps) {        
-        return new Person(id, name, availability);
+    static restore({ id, name, availability }: RestorePersonProps) {  
+        const person = new Person(id, name);
+        for (const dateTime of availability) {
+            person.addAvailability(dateTime);
+        }
+        return person;
+    }
+
+    addAvailability(dateTime: Date): void {
+        const availability = PersonAvailability.create({ dateTime });
+        if (this.availability.some((availability) => availability.isEqual(dateTime))) throw new Error("Availability already exists");
+        this.availability.push(availability);
     }
 
     getAvailability(): any[] {

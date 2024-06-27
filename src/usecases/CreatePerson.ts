@@ -7,7 +7,10 @@ export class CreatePerson implements Usecase {
     constructor(readonly personRepository: PersonRepository) { }
 
     async execute(input: Input): Promise<Output> {
-        const person = Person.create({ name: input.name, availability: input.availability});
+        const person = Person.create({ name: input.name });
+        for (const personAvailability of input.availability) {
+            person.addAvailability(personAvailability);
+        }
         await this.personRepository.save(person);
         return {
             id: person.getId()

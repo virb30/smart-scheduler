@@ -25,4 +25,8 @@ export class PersonAvailability extends Entity {
     getDateTime(): Date {
         return this.dateTime;
     }
+
+    isEqual(date: Date): boolean {
+        return this.dateTime.getTime() === date.getTime()
+    }
 }

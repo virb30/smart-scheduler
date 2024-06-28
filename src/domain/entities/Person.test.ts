@@ -48,4 +48,18 @@ describe("Person unit tests", () => {
             person.addAvailability(new Date("2024-01-08T19:00:00"));
         }).toThrow(new Error("Availability already exists"));
     });
+
+    it("should return true if person is available to date", () => {
+        const person = Person.create({ name: "Person test" });
+        person.addAvailability(new Date("2024-01-01T08:00:00"));
+        person.addAvailability(new Date("2024-01-01T10:00:00"));
+        expect(person.isAvailable(new Date("2024-01-01T08:00:00"))).toBeTruthy();
+    });
+
+    it("should return false if person is not available to date", () => {
+        const person = Person.create({ name: "Person test" });
+        person.addAvailability(new Date("2024-01-01T10:00:00"));
+        person.addAvailability(new Date("2024-01-01T19:00:00"));
+        expect(person.isAvailable(new Date("2024-01-01T08:00:00"))).toBeFalsy();
+    });
 });

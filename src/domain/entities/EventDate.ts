@@ -42,6 +42,10 @@ export class EventDate extends Entity {
         return this.dateTime.getTime() === dateTime.getTime();
     }
 
+    isBetween(fromDate: Date, toDate: Date): boolean {
+        return this.dateTime.getTime() >= fromDate.getTime() && this.dateTime.getTime() <= toDate.getTime();
+    }
+
     private validate() {
         if (this.quantityRequired <= 0) throw new Error("Quantity required must be greater than 0");
     }

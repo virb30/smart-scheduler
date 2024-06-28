@@ -65,4 +65,15 @@ describe("Event unit tests", () => {
             event.addPerson(person1Id);            
         }).toThrow(new Error("Person already registered"));        
     });
+
+    it("should get eventDates of range", () => {
+        const event = Event.create({ name: "Evento teste" });
+        event.addEventDate(new Date("2024-01-01T10:00:00"), 5);
+        event.addEventDate(new Date("2024-01-02T08:00:00"), 3);
+        event.addEventDate(new Date("2024-01-02T10:00:00"), 3);
+        event.addEventDate(new Date("2024-01-03T08:00:00"), 3);
+        expect(event.getEventDatesBetween(new Date("2024-01-01T09:00:00"), new Date("2024-01-02T09:00:00"))).toHaveLength(2);
+        expect(event.getEventDatesBetween(new Date("2024-01-03T08:00:00"), new Date("2024-01-03T09:00:00"))).toHaveLength(1);
+        expect(event.getEventDatesBetween(new Date("2024-01-03T09:00:00"), new Date("2024-01-03T10:00:00"))).toHaveLength(0);
+    });
 });

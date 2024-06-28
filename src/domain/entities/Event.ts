@@ -55,4 +55,8 @@ export class Event extends Entity {
     getPersons(): Id[] {
         return this.persons;
     }
+
+    getEventDatesBetween(fromDate: Date, toDate: Date): EventDate[] {
+        return this.eventDates.filter((eventDate) => (eventDate.isBetween(fromDate, toDate)));
+    }
 }

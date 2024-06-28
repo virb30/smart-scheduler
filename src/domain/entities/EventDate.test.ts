@@ -53,4 +53,20 @@ describe("EventDate unit tests", () => {
         const eventDate = EventDate.create({ dateTime: new Date("2024-01-01T20:00:00"), quantityRequired: 5 });
         expect(eventDate.isEqual(new Date("2024-01-01T21:00:00"))).toBeFalsy();
     });
+
+    it("should return true if dateTime is between fromDate and toDate", () => {
+        const eventDate = EventDate.create({ dateTime: new Date("2024-01-02T20:00:00"), quantityRequired: 5 });
+        expect(eventDate.isBetween(new Date("2024-01-02T00:00:00"), new Date("2024-01-02T21:00:00"))).toBeTruthy();
+        expect(eventDate.isBetween(new Date("2024-01-01T00:00:00"), new Date("2024-01-02T20:00:00"))).toBeTruthy();
+        expect(eventDate.isBetween(new Date("2024-01-02T20:00:00"), new Date("2024-01-03T21:00:00"))).toBeTruthy();
+        expect(eventDate.isBetween(new Date("2024-01-02T20:00:00"), new Date("2024-01-02T20:00:00"))).toBeTruthy();
+    });
+
+    it("should return false if dateTime is not between fromDate and toDate", () => {
+        const eventDate = EventDate.create({ dateTime: new Date("2024-01-02T20:00:00"), quantityRequired: 5 });
+        expect(eventDate.isBetween(new Date("2024-01-01T00:00:00"), new Date("2024-01-01T23:59:59"))).toBeFalsy();
+        expect(eventDate.isBetween(new Date("2024-01-03T00:00:00"), new Date("2024-01-03T23:59:59"))).toBeFalsy();
+        expect(eventDate.isBetween(new Date("2024-01-01T21:00:00"), new Date("2024-01-02T19:59:59"))).toBeFalsy();
+        expect(eventDate.isBetween(new Date("2024-01-02T20:00:01"), new Date("2024-01-02T23:59:59"))).toBeFalsy();
+    });
 });

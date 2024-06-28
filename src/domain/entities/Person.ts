@@ -48,4 +48,8 @@ export class Person extends Entity {
     changeName(name: string): void {
         this.name = name;
     }
+
+    isAvailable(toDate: Date): boolean {
+        return this.availability.some((personAvailability) => personAvailability.isEqual(toDate));
+    }
 }
